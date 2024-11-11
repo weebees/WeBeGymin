@@ -47,7 +47,7 @@ def login():
             login_user(user)
             return redirect(url_for('main.index'))
         else:
-            flash('Login unsuccessful. Check your username and password.')
+            flash('Login failed. Check your username and password.')
 
     return render_template('auth/login.html')
 
