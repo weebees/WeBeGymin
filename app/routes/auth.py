@@ -14,7 +14,13 @@ def register():
         username = request.form.get('username')
         password = request.form.get('password')
 
-        # Hash password and add user to database
+        # Check if the user already exists
+        user = User.query.filter_by(username=username).first()
+        if user:
+            flash('Username already exists. Please choose a different one.')
+            return redirect(url_for('auth.register'))
+
+        # Hash password and add user to the database
         hashed_password = generate_password_hash(password, method='sha256')
         new_user = User(username=username, password=hashed_password)
         db.session.add(new_user)
@@ -52,9 +58,3 @@ def logout():
     """Route to log the user out."""
     logout_user()
     return redirect(url_for('auth.login'))
-
-
-@main_bp.route('/')
-def index():
-    """Home route to test the Flask app setup."""
-    return "Welcome to We Be Gymin!"
